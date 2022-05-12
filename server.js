@@ -31,9 +31,13 @@ app.get("/search", (req, res) => {
     res.render("search", {data: data, urlParam: req.query["s"]})
 })
 
-crawler.crawl_wtn(idShoe, failed_wtn)
-	.then(() => crawler.stockx(failed_sx))
+async function crawling() {
+    crawler.crawl_wtn(idShoe, failed_wtn)
+        .then(() => crawler.stockx(failed_sx))
+        .then(() => console.log("Done !, waiting 5H"))
+        .then(() => setTimeout(crawling, 18000000))
+}
 
-app.listen(8080, () => {
-    console.log("Server up and running on port 8080")
-})
+crawling()
+console.log("Listening on port 3000")
+app.listen(3000)
