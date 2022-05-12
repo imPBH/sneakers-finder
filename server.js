@@ -26,6 +26,11 @@ app.get("/product", (req, res) => {
     res.render("product", {data: data, urlParam: req.query["s"]})
 })
 
+app.get("/search", (req, res) => {
+    let data = crawler.search(req.query["s"])
+    res.render("search", {data: data, urlParam: req.query["s"]})
+})
+
 crawler.crawl_wtn(idShoe, failed_wtn)
 	.then(() => crawler.stockx(failed_sx))
 
