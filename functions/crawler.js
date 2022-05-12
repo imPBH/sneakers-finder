@@ -41,6 +41,24 @@ function chunkify(a, n, balanced) {
     return out;
 }
 
+/* A function that sorts the results of a search by countOfTrue */
+function sortResults(array) {
+    let done = false;
+    while (!done) {
+        done = true;
+        for (let i = 1; i < array.length; i += 1) {
+            if (array[i - 1]["countOfTrue"] < array[i]["countOfTrue"]) {
+                done = false;
+                let tmp = array[i - 1];
+                array[i - 1] = array[i];
+                array[i] = tmp;
+            }
+        }
+    }
+
+    return array;
+}
+
 /* A function to search for shoes in our database from an input, returns an Array of objects */
 function search(input) {
     let content = fs.readFileSync("./sku.json");
@@ -59,15 +77,12 @@ function search(input) {
     input = input.toLowerCase()
     let splittedInput = input.split(" ")
     for (let sku of skus) {
-        //console.log(`SKU = ${sku} Brand = ${data["values"][sku]["brand"]} Model = ${data["values"][sku]["model"]}`)
         let countOfTrue = 0
         for (let chunk of splittedInput) {
             if (data["values"][sku]["model"].toLowerCase().includes(chunk)) {
-                //console.log(`${data["values"][sku]["model"]} includes ${chunk}`)
                 countOfTrue++
             }
             if (data["values"][sku]["brand"].toLowerCase().includes(chunk)) {
-                // console.log(`${data["values"][sku]["brand"]} includes ${chunk}`)
                 countOfTrue++
             }
         }
@@ -422,6 +437,7 @@ async function stockx(failed_sx) {
 module.exports = {
     delay,
     chunkify,
+    sortResults,
     search,
     scrapShoeWtn,
     scrapShoeStockX,
