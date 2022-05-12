@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Alata');
+
+.page-wrapper {
+    padding-bottom: 500px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Alata, serif;
+}
+
+/* Header */
+.nav-wrapper {
+    background-color: #00D1FF;
+    padding-bottom: 8px;
+    padding-top: 8px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    border-bottom: solid black 3px;
+}
+
+.title {
+    margin: auto;
+    text-decoration: none;
+}
+
+.title span {
+    font-weight: bold;
+    font-size: 35px;
+}
