@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SneakersFinder</title>
+    <link href="style.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="nav-wrapper">
+        <div class="title">
+            <a href="/" class="title">
+                <span style="color: #FF0000">Sneakers</span>
+                <span style="color: #111111">Finder</span>
+            </a>
+        </div>
+    </div>
+    <div class="search-wrapper">
+        <div class="user-input">
+            <a>Résultats de la recherche : <%- urlParam %></a>
+        </div>
+        <div class="search-result">
+            <div class="cards">
+                <% for (let result of data) { %>
+                    <% let keys = Object.keys(result) %>
+                    <% let sku = "" %>
+                    <% if (keys.length === 1) { %>
+                        <% sku = keys[0] %>
+                    <% } else { %>
+                        <% sku = keys[1] %>
+                    <% } %>
+                    <div class="shoeCard">
+                        <a href="/product?s=<%- sku %>" style="text-decoration: none; color: #111111">
+                            <div class="shoeImg">
+                                <img src="https://<%- result[sku]["image"] %>"
+                                     class="shoePicture" loading="lazy">
+                            </div>
+                        </a>
+                        <div class="shoeBrand">
+                            <a href="/product?s=<%- sku %>"
+                               style="text-decoration: none; color: #111111"><%- result[sku]["brand"] %></a>
+                        </div>
+                        <div class="shoeModel">
+                            <a href="/product?s=<%- sku %>"
+                               style="text-decoration: none; color: #111111"><%- result[sku]["model"] %></a>
+                        </div>
+                        <div class="startingPrice">
+                            <% if (result[sku]["stockx"]) { %>
+                                <% if (result[sku]["stockx"]["price"] < result[sku]["wethenew"]["price"]) { %>
+                                    <a href="/product?s=<%- sku %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- result[sku]["stockx"]["price"] %> € </a>
+                                <% } else { %>
+                                    <a href="/product?s=<%- sku %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- result[sku]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            <% } else { %>
+                                <a href="/product?s=<%- sku %>" style="text-decoration: none; color: #111111">Starting
+                                    at <%- result[sku]["wethenew"]["price"] %> € </a>
+                            <% } %>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
