@@ -4,6 +4,43 @@ const fs = require("fs");
 /* A function to sleep the program */
 const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
 
+/* A function that splits a given Array into n arrays*/
+function chunkify(a, n, balanced) {
+
+    if (n < 2)
+        return [a];
+
+    let len = a.length,
+        out = [],
+        i = 0,
+        size;
+
+    if (len % n === 0) {
+        size = Math.floor(len / n);
+        while (i < len) {
+            out.push(a.slice(i, i += size));
+        }
+    } else if (balanced) {
+        while (i < len) {
+            size = Math.ceil((len - i) / n--);
+            out.push(a.slice(i, i += size));
+        }
+    } else {
+
+        n--;
+        size = Math.floor(len / n);
+        if (len % size === 0)
+            size--;
+        while (i < size * n) {
+            out.push(a.slice(i, i += size));
+        }
+        out.push(a.slice(size * n));
+
+    }
+
+    return out;
+}
+
 /* A function to scrap all the links of shoes on WeTheNew */
 async function scrapWtn(URL, dataOut, idShoe) {
     let browser = await puppeteer.launch({headless: false});
@@ -127,6 +164,7 @@ async function crawl_wtn(idShoe, failed_wtn) {
 }
 
 module.exports = {
+    delay,
     scrapWtn,
     crawl_wtn
 }
