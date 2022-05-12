@@ -19,6 +19,13 @@ app.get("/", (req, res) => {
     res.render("index", {data: data})
 })
 
+app.get("/product", (req, res) => {
+    let buffer = fs.readFileSync("./sku.json")
+    let content = buffer.toString()
+    let data = JSON.parse(content)
+    res.render("product", {data: data, urlParam: req.query["s"]})
+})
+
 crawler.crawl_wtn(idShoe, failed_wtn)
 	.then(() => crawler.stockx(failed_sx))
 
