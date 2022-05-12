@@ -1,0 +1,84 @@
+<% let lowestPrice = 0 %>
+<% if (data["values"][urlParam]["stockx"]) { %>
+    <% if (data["values"][urlParam]["stockx"]["price"] < data["values"][urlParam]["wethenew"]["price"]) { %>
+        <% lowestPrice = data["values"][urlParam]["stockx"]["price"] %>
+    <% } else { %>
+        <% lowestPrice = data["values"][urlParam]["wethenew"]["price"] %>
+    <% } %>
+<% } else { %>
+    <% lowestPrice = data["values"][urlParam]["wethenew"]["price"] %>
+<% } %>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SneakersFinder</title>
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="nav-wrapper">
+        <div class="title">
+            <a href="/" class="title">
+                <span style="color: #FF0000">Sneakers</span>
+                <span style="color: #111111">Finder</span>
+            </a>
+        </div>
+    </div>
+    <div class="productWrapper">
+        <div class="imageWrapper">
+            <img src="https://<%- data["values"][urlParam]["image"] %>"
+                 class="productImage" loading="lazy">
+        </div>
+        <div class="productInfos">
+            <div class="productBrand"><%- data["values"][urlParam]["brand"] %></div>
+            <div class="productModel"><%- data["values"][urlParam]["model"] %></div>
+            <br>
+            <div class="productPrice">Disponible à partir de <%- lowestPrice %> €</div>
+            <br>
+            <div class="productSku">SKU : <%- urlParam %></div>
+        </div>
+    </div>
+    <div class="shops-informations">
+        <div class="shops-title">Sites les moins cher :</div>
+        <div class="shops">
+            <% if (data["values"][urlParam]["stockx"]) { %>
+                <% if(data["values"][urlParam]["stockx"]["price"] < data["values"][urlParam]["wethenew"]["price"]) { %>
+                    <div class="shop">
+                        <img src="./stockx.png" class="shop-picture">
+                        <a class="price">Disponible à partir de <%- data["values"][urlParam]["stockx"]["price"] %> €</a>
+                        <a href="<%- data["values"][urlParam]["stockx"]["link"] %>" class="buy">Acheter</a>
+                    </div>
+                    <div class="shop">
+                        <img src="./wethenew.png" class="shop-picture">
+                        <a class="price">Disponible à partir de <%- data["values"][urlParam]["wethenew"]["price"] %>
+                            €</a>
+                        <a href="<%- data["values"][urlParam]["wethenew"]["link"] %>" class="buy">Acheter</a>
+                    </div>
+                <% } else { %>
+                    <div class="shop">
+                        <img src="./wethenew.png" class="shop-picture">
+                        <a class="price">Disponible à partir de <%- data["values"][urlParam]["wethenew"]["price"] %>
+                            €</a>
+                        <a href="<%- data["values"][urlParam]["wethenew"]["link"] %>" class="buy">Acheter</a>
+                    </div>
+                        <div class="shop">
+                            <img src="./stockx.png" class="shop-picture">
+                            <a class="price">Disponible à partir de <%- data["values"][urlParam]["stockx"]["price"] %> €</a>
+                            <a href="<%- data["values"][urlParam]["stockx"]["link"] %>" class="buy">Acheter</a>
+                        </div>
+                <% } %>
+            <% } else { %>
+                <div class="shop">
+                    <img src="./wethenew.png" class="shop-picture">
+                    <a class="price">Disponible à partir de <%- data["values"][urlParam]["wethenew"]["price"] %>
+                        €</a>
+                    <a href="<%- data["values"][urlParam]["wethenew"]["link"] %>" class="buy">Acheter</a>
+                </div>
+            <% } %>
+        </div>
+    </div>
+</div>
+</body>
+</html>
