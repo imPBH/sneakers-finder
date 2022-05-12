@@ -33,6 +33,7 @@ app.get("/search", (req, res) => {
 
 async function crawling() {
     crawler.crawl_wtn(idShoe, failed_wtn)
+        .then(() => idShoe = 1)
         .then(() => crawler.stockx(failed_sx))
         .then(() => console.log("Done !, waiting 5H"))
         .then(() => setTimeout(crawling, 18000000))
