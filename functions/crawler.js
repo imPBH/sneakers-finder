@@ -1,6 +1,9 @@
 const puppeteer = require('puppeteer');
 const fs = require("fs");
 
+/* A function to sleep the program */
+const delay = ms => new Promise(resolve => setTimeout(resolve, ms))
+
 /* A function to scrap all the links of shoes on WeTheNew */
 async function scrapWtn(URL, dataOut, idShoe) {
     let browser = await puppeteer.launch({headless: false});
