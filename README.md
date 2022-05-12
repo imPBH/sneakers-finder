@@ -1,6 +1,6 @@
 # Sneakers Finder
 
-Sneakers Finder is a web crawler that crawl over WeTheNew and StockX. The crawler scrapes all available shoes
+Sneakers Finder is a web crawler that crawls over WeTheNew and StockX. The crawler scrapes all available shoes
 on [WeTheNew](https://wethenew.com/) (SKU / Image URL / Price / Brand / Model) and then scrapes the price for the same
 shoe on [StockX](https://stockx.com/) .<br/>
 All the scrapped data is then used to be compared on a web interface to display where you can find each shoe at the
@@ -20,6 +20,8 @@ You need to write the following commands on the terminal screen so that you can 
 ```
 
 ## Usage
+
+The application is running on [localhost:3000](http://localhost:3000)
 
 The homepage of the web interface is available once a certain amount of shoes has been scrapped, the speed of scrapping
 depends on your connection speed and the power of your computer. <br />
