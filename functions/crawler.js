@@ -41,6 +41,49 @@ function chunkify(a, n, balanced) {
     return out;
 }
 
+/* A function to search for shoes in our database from an input, returns an Array of objects */
+function search(input) {
+    let content = fs.readFileSync("./sku.json");
+    content = content.toString()
+    let data = JSON.parse(content)
+
+    let results = []
+    let skus = Object.keys(data["values"])
+
+    if (data["values"][input]) {
+        let obj = {}
+        obj[input] = data["values"][input]
+        results.push(obj)
+    }
+
+    input = input.toLowerCase()
+    let splittedInput = input.split(" ")
+    for (let sku of skus) {
+        //console.log(`SKU = ${sku} Brand = ${data["values"][sku]["brand"]} Model = ${data["values"][sku]["model"]}`)
+        let countOfTrue = 0
+        for (let chunk of splittedInput) {
+            if (data["values"][sku]["model"].toLowerCase().includes(chunk)) {
+                //console.log(`${data["values"][sku]["model"]} includes ${chunk}`)
+                countOfTrue++
+            }
+            if (data["values"][sku]["brand"].toLowerCase().includes(chunk)) {
+                // console.log(`${data["values"][sku]["brand"]} includes ${chunk}`)
+                countOfTrue++
+            }
+        }
+
+
+        if ((countOfTrue / splittedInput.length) >= 0.7) {
+            let obj = {}
+            obj["countOfTrue"] = countOfTrue
+            obj[sku] = data["values"][sku]
+            results.push(obj)
+        }
+    }
+
+    return sortResults(results)
+}
+
 /* A function to scrap the brand, the model, the sku and the price of a shoe on WeTheNew */
 async function scrapShoeWtn(chunk, index, dataOut, failed_wtn) {
     if (chunk[index] === undefined) {
@@ -379,6 +422,7 @@ async function stockx(failed_sx) {
 module.exports = {
     delay,
     chunkify,
+    search,
     scrapShoeWtn,
     scrapShoeStockX,
     scrapWtn,
