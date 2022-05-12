@@ -147,6 +147,64 @@ async function scrapShoeWtn(chunk, index, dataOut, failed_wtn) {
     }
 }
 
+/* A function to scrap the price of a shoe on StockX */
+async function scrapShoeStockX(sku, index, dataOut, failed_sx) {
+
+    if (sku[index] === undefined) {
+        return
+    }
+
+    let browser = await puppeteer.launch({headless: false});
+    let page = await browser.newPage();
+
+    let searched_sku = sku[index].replace("-", "")
+    let baseURL = "https://stockx.com/fr-fr/search?s="
+    try {
+        await page.goto(baseURL + searched_sku, {
+            waitUntil: 'load',
+            // Remove the timeout
+            timeout: 60000
+        });
+
+        let shoeUrl = await page.evaluate(() => {
+            let resultsCount = document.querySelector("#browse-wrapper > div.chakra-container.css-bu55a7 > div > div.css-c8gdzb > div.css-b1ilzc > div > div:nth-child(1) > div > p > b")
+            resultsCount = resultsCount.innerHTML
+            resultsCount = parseInt(resultsCount)
+
+            if (resultsCount === 0) {
+                return 0
+            }
+
+            let baseUrl = "https://stockx.com"
+            let elements = document.getElementsByClassName('css-1dh562i');
+            elements = elements[0].getElementsByTagName("a")
+
+            let url = elements[0].getAttribute("href")
+
+            return baseUrl + url
+        });
+        if (shoeUrl === 0) {
+            console.log(`No result found for ${sku[index]}`)
+        } else {
+            let price = await page.evaluate(() => {
+                let elements = document.getElementsByClassName('chakra-text css-9ryi0c');
+                elements = elements[0].innerText
+                let scrappedPrice = elements.slice(0, -2)
+                scrappedPrice = scrappedPrice.replace(/\s/g, "")
+                return parseInt(scrappedPrice)
+            });
+            console.log(`StockX infos for ${sku[index]} : URL = ${shoeUrl} price = ${price}`)
+            dataOut.values[sku[index]]["stockx"] = {"link": shoeUrl, "price": price}
+        }
+    } catch (err) {
+        console.log(`Oops, error for sku = ${sku[index]}, error = ${err}`)
+        failed_sx.push({"sku": sku[index], reason: err})
+        fs.writeFileSync('./failed_sx.json', JSON.stringify(failed_sx));
+    } finally {
+        await browser.close()
+    }
+}
+
 /* A function to scrap all the links of shoes on WeTheNew */
 async function scrapWtn(URL, dataOut, idShoe) {
     let browser = await puppeteer.launch({headless: false});
@@ -275,6 +333,7 @@ module.exports = {
     delay,
     chunkify,
     scrapShoeWtn,
+    scrapShoeStockX,
     scrapWtn,
     crawl_wtn
 }
