@@ -327,7 +327,54 @@ async function crawl_wtn(idShoe, failed_wtn) {
     await delay(1000)
 }
 
+/* A function that crawls and scrap data on StockX */
+async function stockx(failed_sx) {
+    fs.writeFileSync('./failed_sx.json', "[]");
+    failed_sx = []
 
+    await delay(5000)
+    let content = fs.readFileSync("./sku.json");
+    content = content.toString()
+    let infos = JSON.parse(content)
+
+    let skusToSearch = Object.keys(infos.values)
+    let searchChunks = chunkify(skusToSearch, 7, true)
+    for (let i = 0; i < searchChunks[0].length; i++) {
+        let scrapping = [
+            scrapShoeStockX(searchChunks[6], i, infos, failed_sx),
+            scrapShoeStockX(searchChunks[5], i, infos, failed_sx),
+            scrapShoeStockX(searchChunks[4], i, infos, failed_sx),
+            scrapShoeStockX(searchChunks[3], i, infos, failed_sx),
+            scrapShoeStockX(searchChunks[2], i, infos, failed_sx),
+            scrapShoeStockX(searchChunks[1], i, infos, failed_sx),
+            scrapShoeStockX(searchChunks[0], i, infos, failed_sx)
+        ]
+        await Promise.all(scrapping).then(() => {
+            console.log(`Bunch [${i + 1}]/[${searchChunks[0].length}] done !`);
+        });
+        await delay(3000)
+        fs.writeFileSync('./sku.json', JSON.stringify(infos));
+
+    }
+    await delay(2000)
+    fs.writeFileSync('./sku.json', JSON.stringify(infos));
+    console.log("First bunch of StockX SKUs done !")
+
+    await delay(2000)
+    console.log("Waiting 5 minutes to prevent antibot detection")
+    await delay(300000)
+    try {
+        const failedSku = require('../failed_sx.json')
+        console.log("Starting failed skus")
+        for (let shoe of failedSku) {
+            await scrapShoeStockX(shoe, "sku", infos)
+            fs.writeFileSync('./sku.json', JSON.stringify(infos));
+        }
+        fs.writeFileSync('./sku.json', JSON.stringify(infos));
+    } catch (err) {
+        console.log("No failed skus !")
+    }
+}
 
 module.exports = {
     delay,
@@ -335,5 +382,6 @@ module.exports = {
     scrapShoeWtn,
     scrapShoeStockX,
     scrapWtn,
-    crawl_wtn
+    crawl_wtn,
+    stockx
 }
