@@ -1,0 +1,293 @@
+<% let brands = ["Nike", "Adidas", "New Balance", "Air Jordan", "Converse"] %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SneakersFinder</title>
+    <link href="./style.css" rel="stylesheet">
+</head>
+<body>
+<div class="page-wrapper">
+    <div class="nav-wrapper">
+        <div class="title">
+            <a href="/" class="title">
+                <span style="color: #FF0000">Sneakers</span>
+                <span style="color: #111111">Finder</span>
+            </a>
+        </div>
+    </div>
+    <div class="searchbar-wrapper">
+        <div class="searchbar">
+            <div class="searchbar-title">
+                <span>We search for you !</span>
+            </div>
+            <div class="searchbar-input">
+                <form action="/search">
+                    <input type="text" placeholder="Search..." name="s" id="searchInput">
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="content">
+        <div class="brandCategory">
+            <div class="brandName">
+                <a class="brand">Nike :</a>
+            </div>
+            <div class="cards">
+                <% for (let i = 0, j = 0; j < 15; i++) { %>
+                    <% let key = Object.keys(data["values"])[i] %>
+                    <% if (data["values"][key]["brand"] === "Nike") { %>
+                        <div class="shoeCard">
+                            <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">
+                                <div class="shoeImg">
+                                    <img src="https://<%- data["values"][key]["image"] %>"
+                                         class="shoePicture" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="shoeBrand">
+                                <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Nike</a>
+                            </div>
+                            <div class="shoeModel">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["model"] %></a>
+                            </div>
+                            <div class="startingPrice">
+                                <% if (data["values"][key]["stockx"]) { %>
+                                    <% if (data["values"][key]["stockx"]["price"] < data["values"][key]["wethenew"]["price"]) { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["stockx"]["price"] %> € </a>
+                                    <% } else { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% j++ %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+        <div class="brandCategory">
+            <div class="brandName">
+                <a class="brand">Adidas :</a>
+            </div>
+            <div class="cards">
+                <% for (let i = 0, j = 0; j < 15; i++) { %>
+                    <% let key = Object.keys(data["values"])[i] %>
+                    <% if (data["values"][key]["brand"] === "Adidas") { %>
+                        <div class="shoeCard">
+                            <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">
+                                <div class="shoeImg">
+                                    <img src="https://<%- data["values"][key]["image"] %>"
+                                         class="shoePicture" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="shoeBrand">
+                                <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Adidas</a>
+                            </div>
+                            <div class="shoeModel">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["model"] %></a>
+                            </div>
+
+                            <div class="startingPrice">
+                                <% if (data["values"][key]["stockx"]) { %>
+                                    <% if (data["values"][key]["stockx"]["price"] < data["values"][key]["wethenew"]["price"]) { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["stockx"]["price"] %> € </a>
+                                    <% } else { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            </div>
+                        </div>
+
+                        <% j++ %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+        <div class="brandCategory">
+            <div class="brandName">
+                <a class="brand">Air Jordan :</a>
+            </div>
+            <div class="cards">
+                <% for (let i = 0, j = 0; j < 15; i++) { %>
+                    <% let key = Object.keys(data["values"])[i] %>
+                    <% if (data["values"][key]["brand"] === "Air Jordan") { %>
+                        <div class="shoeCard">
+                            <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">
+                                <div class="shoeImg">
+                                    <img src="https://<%- data["values"][key]["image"] %>"
+                                         class="shoePicture" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="shoeBrand">
+                                <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Air
+                                    Jordan</a>
+                            </div>
+                            <div class="shoeModel">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["model"] %></a>
+                            </div>
+                            <div class="startingPrice">
+                                <% if (data["values"][key]["stockx"]) { %>
+                                    <% if (data["values"][key]["stockx"]["price"] < data["values"][key]["wethenew"]["price"]) { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["stockx"]["price"] %> € </a>
+                                    <% } else { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% j++ %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+        <div class="brandCategory">
+            <div class="brandName">
+                <a class="brand">New Balance :</a>
+            </div>
+            <div class="cards">
+                <% for (let i = 0, j = 0; j < 15; i++) { %>
+                    <% let key = Object.keys(data["values"])[i] %>
+                    <% if (data["values"][key]["brand"] === "New Balance") { %>
+                        <div class="shoeCard">
+                            <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">
+                                <div class="shoeImg">
+                                    <img src="https://<%- data["values"][key]["image"] %>"
+                                         class="shoePicture" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="shoeBrand">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111">NewBalance</a>
+                            </div>
+                            <div class="shoeModel">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["model"] %></a>
+                            </div>
+                            <div class="startingPrice">
+                                <% if (data["values"][key]["stockx"]) { %>
+                                    <% if (data["values"][key]["stockx"]["price"] < data["values"][key]["wethenew"]["price"]) { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["stockx"]["price"] %> € </a>
+                                    <% } else { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% j++ %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+        <div class="brandCategory">
+            <div class="brandName">
+                <a class="brand">Converse :</a>
+            </div>
+            <div class="cards">
+                <% for (let i = 0, j = 0; j < 15; i++) { %>
+                    <% let key = Object.keys(data["values"])[i] %>
+                    <% if (data["values"][key]["brand"] === "Converse") { %>
+                        <div class="shoeCard">
+                            <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">
+                                <div class="shoeImg">
+                                    <img src="https://<%- data["values"][key]["image"] %>"
+                                         class="shoePicture" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="shoeBrand">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111">Converse</a>
+                            </div>
+                            <div class="shoeModel">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["model"] %></a>
+                            </div>
+                            <div class="startingPrice">
+                                <% if (data["values"][key]["stockx"]) { %>
+                                    <% if (data["values"][key]["stockx"]["price"] < data["values"][key]["wethenew"]["price"]) { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["stockx"]["price"] %> € </a>
+                                    <% } else { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% j++ %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+        <div class="brandCategory">
+            <div class="brandName">
+                <a class="brand">Other :</a>
+            </div>
+            <div class="cards">
+                <% for (let i = 0, j = 0; j < 15; i++) { %>
+                    <% let key = Object.keys(data["values"])[i] %>
+                    <% if (!brands.includes(data["values"][key]["brand"])) { %>
+                        <div class="shoeCard">
+                            <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">
+                                <div class="shoeImg">
+                                    <img src="https://<%- data["values"][key]["image"] %>"
+                                         class="shoePicture" loading="lazy">
+                                </div>
+                            </a>
+                            <div class="shoeBrand">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["brand"] %></a>
+                            </div>
+                            <div class="shoeModel">
+                                <a href="/product?s=<%- key %>"
+                                   style="text-decoration: none; color: #111111"><%- data["values"][key]["model"] %></a>
+                            </div>
+                            <div class="startingPrice">
+                                <% if (data["values"][key]["stockx"]) { %>
+                                    <% if (data["values"][key]["stockx"]["price"] < data["values"][key]["wethenew"]["price"]) { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["stockx"]["price"] %> € </a>
+                                    <% } else { %>
+                                        <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                            at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                    <% } %>
+                                <% } else { %>
+                                    <a href="/product?s=<%- key %>" style="text-decoration: none; color: #111111">Starting
+                                        at <%- data["values"][key]["wethenew"]["price"] %> € </a>
+                                <% } %>
+                            </div>
+                        </div>
+                        <% j++ %>
+                    <% } %>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
