@@ -41,6 +41,112 @@ function chunkify(a, n, balanced) {
     return out;
 }
 
+/* A function to scrap the brand, the model, the sku and the price of a shoe on WeTheNew */
+async function scrapShoeWtn(chunk, index, dataOut, failed_wtn) {
+    if (chunk[index] === undefined) {
+        return
+    }
+    let url = ""
+    if (index === "url") {
+        url = chunk[index]
+    } else {
+        url = chunk[index].info.link
+    }
+
+
+    let browser = await puppeteer.launch({headless: false});
+    try {
+        let page = await browser.newPage();
+        await page.goto(url, {
+            waitUntil: 'load',
+            // Remove the timeout
+            timeout: 60000
+        });
+
+        let scrapSku = await page.evaluate(() => {
+            let dataArr = []
+
+            let elements = document.getElementsByClassName("select");
+            elements = elements[0].getElementsByTagName("select");
+            elements = elements[elements.length - 1].getElementsByTagName("option");
+
+
+            for (let sku of elements) {
+                if (sku.getAttribute('data-sku') !== "") {
+                    dataArr.push(sku.getAttribute('data-sku'))
+                }
+            }
+            return dataArr
+        });
+
+        let scrapPrice = await page.evaluate(() => {
+            let elements = document.getElementsByTagName("scalapay-widget")
+            let price = elements[0].getAttribute("amount")
+
+            return parseInt(price)
+        });
+
+        let scrapImg = await page.evaluate(() => {
+            let elements = document.getElementsByClassName("image__container");
+            elements = elements[0].getElementsByTagName("img")
+            let image = elements[0].getAttribute("src")
+
+            return image.slice(2)
+        })
+
+        let scrapBrand = await page.evaluate(() => {
+            let elements = document.getElementsByClassName("vendor")
+            let brand = elements[0].innerText
+            return brand
+        })
+
+        let scrapModel = await page.evaluate(() => {
+            let elements = document.getElementsByName("twitter:title")
+            elements = elements[0]
+            let model = elements.getAttribute("content")
+
+            return model
+        })
+        await delay(2000)
+        const uniqueArr = [...new Set(scrapSku)];
+        if (uniqueArr[0] === "") {
+            console.log("empty sku")
+            uniqueArr[0] = await page.evaluate(() => {
+
+                let elements = document.getElementsByClassName("none lazyloaded");
+                elements = elements[0].getAttribute("alt")
+                let sku = elements.match(/(?<=- ).+/g)
+                return sku[0].trim()
+            })
+        }
+
+        if (uniqueArr[0] === null) {
+            uniqueArr[0] = await page.evaluate(() => {
+                let elements = document.getElementsByName("twitter:description")
+                elements = elements[0].getAttribute("content")
+                let sku = elements.match(/(?<=SKU : ).+(?=Date)/g)
+                return sku[0].trim()
+            })
+        }
+        for (let sku of uniqueArr) {
+            dataOut.values[sku] = {
+                brand: scrapBrand,
+                model: scrapModel,
+                image: scrapImg,
+                wethenew: {link: url, price: scrapPrice}
+            }
+            console.log(`Success ! sku = ${sku} url = ${url} price = ${scrapPrice}`)
+        }
+    } catch (err) {
+        console.log(`Oops, error for URL = ${url}, error = ${err}`)
+        failed_wtn.push({url: url, reason: err})
+        fs.writeFileSync('./failed_wtn.json', JSON.stringify(failed_wtn));
+
+    } finally {
+        await browser.close()
+    }
+}
+
 /* A function to scrap all the links of shoes on WeTheNew */
 async function scrapWtn(URL, dataOut, idShoe) {
     let browser = await puppeteer.launch({headless: false});
@@ -163,8 +269,12 @@ async function crawl_wtn(idShoe, failed_wtn) {
     await delay(1000)
 }
 
+
+
 module.exports = {
     delay,
+    chunkify,
+    scrapShoeWtn,
     scrapWtn,
     crawl_wtn
 }
