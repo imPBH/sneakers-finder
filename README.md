@@ -6,7 +6,7 @@ shoe on [StockX](https://stockx.com/) .<br/>
 All the scrapped data is then used to be compared on a web interface to display where you can find each shoe at the
 cheapest price. <br/>
 
-![Homepage](https://image.noelshack.com/fichiers/2022/19/5/1652394387-sneakers-finder-homepage.jpg)
+![Homepage](https://user-images.githubusercontent.com/59230262/216298568-f6fd165f-1541-4b7f-be96-a5532f6a30cc.png)
 
 ## Download and Installation
 
@@ -30,10 +30,10 @@ bar. <br />
 
 ### Search page
 
-![Search page](https://image.noelshack.com/fichiers/2022/19/5/1652394992-sneakers-finder-search.png)
+![Search page](https://user-images.githubusercontent.com/59230262/216298709-8a79883b-6bd6-4e4b-bf2b-38253a8f1eb7.png)
 
 ### Product page
 
 On the product page you will find a picture of the shoe, the brand, the model, the lowest price and the SKU. <br/>
 The sites where you can buy the shoes are sorted from cheapest to most expensive.
-![Product page](https://image.noelshack.com/fichiers/2022/19/5/1652395020-sneakers-finder-product.png)
+![Product page](https://user-images.githubusercontent.com/59230262/216298813-ec6dfd73-7e2a-4555-90a1-d80571c24f19.png)
